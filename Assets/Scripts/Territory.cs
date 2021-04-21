@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class Territory : MonoBehaviour
 {
@@ -9,7 +10,6 @@ public class Territory : MonoBehaviour
     [SerializeField] private Image greenProgressBar;
     [SerializeField] private RectTransform treeSpiritRect;
     [SerializeField] private RectTransform lavaSpiritRect;
-
     [SerializeField] private LeanTweenType buttonEase;
 
     public float greenMaximum = 0;
@@ -17,8 +17,17 @@ public class Territory : MonoBehaviour
 
     private const float territoryMin = 0.12f;
     private const float territoryMax = 0.88f;
+    //private const float 
 
     int clicksToPass = 10;
+
+    public UnityEvent DayTime;
+    private DayNight dayNight;
+
+    private void Awake()
+    {
+        dayNight = FindObjectOfType<DayNight>();
+    }
 
     private void Start()
     {
@@ -33,7 +42,7 @@ public class Territory : MonoBehaviour
 
     private void Update()
     {
-       
+      
     }
 
     public void SpiritButton(RectTransform spirit)
@@ -49,16 +58,39 @@ public class Territory : MonoBehaviour
             spirit.LeanScale(newScale, 0.8f).setEase(buttonEase);
         }
 
-        if(spirit == treeSpiritRect)
+        //if(spirit == treeSpiritRect)
+        //{
+        //    if (greenProgressBar.fillAmount < 0.87f)
+        //        greenProgressBar.fillAmount += 0.76f / clicksToPass;
+        //}
+        //else
+        //{
+        //    if (redProgressBar.fillAmount < 0.87f)
+        //        redProgressBar.fillAmount += 0.76f / clicksToPass;
+        //}        
+    }
+
+    public void GrowAndDecay()
+    {
+        // Check the isDay bool from the Day / Night script
+        if (dayNight.isDay)
         {
-            if (greenProgressBar.fillAmount < 0.87f)
-                greenProgressBar.fillAmount += 0.76f / clicksToPass;
-        }
-        else
-        {
+            // Grow Lava
+            Debug.Log("Day Time!");
             if (redProgressBar.fillAmount < 0.87f)
                 redProgressBar.fillAmount += 0.76f / clicksToPass;
+
+            // Decay Forest
         }
-        
+
+        else if (!dayNight.isDay)
+        {
+            // Grow Forest
+            Debug.Log("Night Time!");
+            if (greenProgressBar.fillAmount < 0.87f)
+                greenProgressBar.fillAmount += 0.76f / clicksToPass;
+
+            // Decay Lava
+        }
     }
 }

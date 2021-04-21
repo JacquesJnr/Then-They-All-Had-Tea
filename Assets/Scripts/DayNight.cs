@@ -8,27 +8,30 @@ public class DayNight : MonoBehaviour
     [SerializeField] public const float timer = 5f;
     [Range(0, timer)] public float elapsed = 0;
     [SerializeField] private CanvasGroup BG;
-    [SerializeField] private bool dayTime = true;
+    public bool isDay = true;
 
-    // Start is called before the first frame update
-    void Start()
+    private Territory territory;
+
+    void Awake()
     {
-        
+        territory = FindObjectOfType<Territory>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         elapsed += Time.deltaTime;
 
         if(elapsed >= timer)
         {
-            FadeInOut(dayTime);
-            Debug.Log("Time");
-            if (dayTime)
-                dayTime = false;
+            // Fade between backgrounds.
+            FadeInOut(isDay);
+
+            if (isDay)
+                isDay = false;
             else
-                dayTime = true;
+                isDay = true;
+
+            territory.DayTime.Invoke();
             elapsed = 0;
         }
     }
@@ -36,8 +39,8 @@ public class DayNight : MonoBehaviour
     public void FadeInOut(bool isDay)
     {
         if(isDay)
-            BG.LeanAlpha(0, 0.5f);
+            BG.LeanAlpha(0, 0.5f); // Fade to night sky.
         else
-            BG.LeanAlpha(1, 0.5f);
+            BG.LeanAlpha(1, 0.5f); // Fade to day sky.
     }
 }
