@@ -16,8 +16,8 @@ public class Territory : MonoBehaviour
     public float redMaximum = 0;
 
     private const float territoryMin = 0.12f;
-    private const float territoryMax = 0.88f;
-    //private const float 
+    private const float territoryMax = 0.87f;
+    private const float territoryDelta = 0.76f;
 
     int clicksToPass = 10;
 
@@ -70,6 +70,8 @@ public class Territory : MonoBehaviour
         //}        
     }
 
+
+    // TO DO - Add click counter for each button
     public void GrowAndDecay()
     {
         // Check the isDay bool from the Day / Night script
@@ -77,20 +79,24 @@ public class Territory : MonoBehaviour
         {
             // Grow Lava
             Debug.Log("Day Time!");
-            if (redProgressBar.fillAmount < 0.87f)
-                redProgressBar.fillAmount += 0.76f / clicksToPass;
+            if (redProgressBar.fillAmount < territoryMax)
+                redProgressBar.fillAmount += territoryDelta / clicksToPass; // * clickCounter
 
             // Decay Forest
+            if (greenProgressBar.fillAmount > territoryMin)
+                greenProgressBar.fillAmount -= territoryDelta / clicksToPass;
         }
 
         else if (!dayNight.isDay)
         {
             // Grow Forest
             Debug.Log("Night Time!");
-            if (greenProgressBar.fillAmount < 0.87f)
-                greenProgressBar.fillAmount += 0.76f / clicksToPass;
+            if (greenProgressBar.fillAmount < territoryMax)
+                greenProgressBar.fillAmount += territoryDelta / clicksToPass;
 
             // Decay Lava
+            if (redProgressBar.fillAmount > territoryMin)
+                redProgressBar.fillAmount -= territoryDelta / clicksToPass;
         }
     }
 }

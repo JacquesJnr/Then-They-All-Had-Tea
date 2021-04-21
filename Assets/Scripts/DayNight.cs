@@ -7,7 +7,7 @@ public class DayNight : MonoBehaviour
 {
     [SerializeField] public const float timer = 5f;
     [Range(0, timer)] public float elapsed = 0;
-    [SerializeField] private CanvasGroup BG;
+    [SerializeField] private CanvasGroup day_bg, night_bg;
     public bool isDay = true;
 
     private Territory territory;
@@ -15,6 +15,8 @@ public class DayNight : MonoBehaviour
     void Awake()
     {
         territory = FindObjectOfType<Territory>();
+        night_bg.alpha = 0;
+        day_bg.alpha = 1;
     }
 
     void Update()
@@ -38,9 +40,17 @@ public class DayNight : MonoBehaviour
 
     public void FadeInOut(bool isDay)
     {
-        if(isDay)
-            BG.LeanAlpha(0, 0.5f); // Fade to night sky.
-        else
-            BG.LeanAlpha(1, 0.5f); // Fade to day sky.
+        if (isDay) 
+        {
+            day_bg.LeanAlpha(0, 0.5f); // Fade day sky out
+            night_bg.LeanAlpha(1, 0.5f); // Fade night sky in
+            
+        }
+        else 
+        {
+            day_bg.LeanAlpha(1, 0.5f); // Fade day sky in
+            night_bg.LeanAlpha(0, 0.5f); // Fade night sky out
+        }
+            
     }
 }
