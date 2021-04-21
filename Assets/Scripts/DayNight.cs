@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class DayNight : MonoBehaviour
 {
-    const float timer = 1f;
+    [SerializeField] public const float timer = 5f;
     [Range(0, timer)] public float elapsed = 0;
     [SerializeField] private CanvasGroup BG;
     [SerializeField] private bool dayTime = true;
