@@ -251,7 +251,7 @@ RectTransform:
   m_GameObject: {fileID: 220194563}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children: []
   m_Father: {fileID: 1654645584}
   m_RootOrder: 1
@@ -303,7 +303,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 220194566}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 281103221}
+        m_MethodName: LavaSpiritPressed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &220194566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -351,6 +362,7 @@ GameObject:
   m_Component:
   - component: {fileID: 281103220}
   - component: {fileID: 281103221}
+  - component: {fileID: 281103222}
   m_Layer: 0
   m_Name: Territory Manager
   m_TagString: Untagged
@@ -388,8 +400,24 @@ MonoBehaviour:
   greenProgressBar: {fileID: 289705276}
   treeSpiritRect: {fileID: 781865438}
   lavaSpiritRect: {fileID: 220194564}
+  buttonEase: 0
   greenMaximum: 0
   redMaximum: 0
+--- !u!114 &281103222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 281103219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0222810a8bbc094fa6556ae373a980e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  elapsed: 0
+  BG: {fileID: 1909763259}
+  dayTime: 1
 --- !u!1 &289705274
 GameObject:
   m_ObjectHideFlags: 0
@@ -575,7 +603,7 @@ RectTransform:
   m_GameObject: {fileID: 781865437}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children: []
   m_Father: {fileID: 1654645584}
   m_RootOrder: 0
@@ -627,7 +655,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 781865440}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 281103221}
+        m_MethodName: TreeSpiritPressed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &781865440
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -676,13 +715,14 @@ GameObject:
   - component: {fileID: 911479249}
   - component: {fileID: 911479251}
   - component: {fileID: 911479250}
+  - component: {fileID: 911479252}
   m_Layer: 5
   m_Name: NightBG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &911479249
 RectTransform:
   m_ObjectHideFlags: 0
@@ -736,6 +776,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 911479248}
   m_CullTransparentMesh: 0
+--- !u!225 &911479252
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 911479248}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &1231829438
 GameObject:
   m_ObjectHideFlags: 0
@@ -1022,6 +1074,7 @@ GameObject:
   - component: {fileID: 1909763256}
   - component: {fileID: 1909763258}
   - component: {fileID: 1909763257}
+  - component: {fileID: 1909763259}
   m_Layer: 5
   m_Name: DayBG
   m_TagString: Untagged
@@ -1082,6 +1135,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1909763255}
   m_CullTransparentMesh: 0
+--- !u!225 &1909763259
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1909763255}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &2061959172
 GameObject:
   m_ObjectHideFlags: 0
