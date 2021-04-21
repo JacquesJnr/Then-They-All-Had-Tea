@@ -16,7 +16,9 @@ public class Territory : MonoBehaviour
     public float redMaximum = 0;
 
     private const float territoryMin = 0.12f;
+    private const float territoryMax = 0.88f;
 
+    int clicksToPass = 10;
 
     private void Start()
     {
@@ -31,36 +33,32 @@ public class Territory : MonoBehaviour
 
     private void Update()
     {
-        
+       
     }
 
-    public void TreeSpiritPressed()
+    public void SpiritButton(RectTransform spirit)
     {
-        var scaleX = treeSpiritRect.localScale.x;
-        var scaleY = treeSpiritRect.localScale.y;
-        Vector3 newScale = new Vector3(scaleX + 0.05f, scaleY + 0.05f, 0);
+        var scaleX = spirit.localScale.x;
+        var scaleY = spirit.localScale.y;
+        float scaleDiff = 0.5f / clicksToPass;
 
-        if (scaleX <= 1)
+        Vector3 newScale = new Vector3(scaleX + scaleDiff, scaleY + scaleDiff ,0);
+
+        if (scaleX < 1)
         {
-            treeSpiritRect.LeanScale(newScale, 0.8f).setEase(buttonEase);
+            spirit.LeanScale(newScale, 0.8f).setEase(buttonEase);
+        }
+
+        if(spirit == treeSpiritRect)
+        {
+            if (greenProgressBar.fillAmount < 0.87f)
+                greenProgressBar.fillAmount += 0.76f / clicksToPass;
+        }
+        else
+        {
+            if (redProgressBar.fillAmount < 0.87f)
+                redProgressBar.fillAmount += 0.76f / clicksToPass;
         }
         
-        for(int i = 0; i > 100; i++)
-        {
-            
-        }
-        greenProgressBar.fillAmount = Mathf.Lerp(greenProgressBar.fillAmount, 1f, 0.01f);
-    }
-
-    public void LavaSpiritPressed()
-    {
-        var scaleX = lavaSpiritRect.localScale.x;
-        var scaleY = lavaSpiritRect.localScale.y;
-        Vector3 newScale = new Vector3(scaleX + 0.05f, scaleY + 0.05f, 0);
-        
-        if (scaleX <= 1)
-        {
-            lavaSpiritRect.LeanScale(newScale, 0.8f).setEase(buttonEase);
-        }
     }
 }
