@@ -388,7 +388,8 @@ MonoBehaviour:
   greenProgressBar: {fileID: 289705276}
   treeSpiritRect: {fileID: 781865438}
   lavaSpiritRect: {fileID: 220194564}
-  baseTerritory: 0.12
+  greenMaximum: 0
+  redMaximum: 0
 --- !u!1 &289705274
 GameObject:
   m_ObjectHideFlags: 0
@@ -579,10 +580,10 @@ RectTransform:
   m_Father: {fileID: 1654645584}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.2023897, y: 1}
-  m_AnchoredPosition: {x: -0.24597168, y: -0.57499695}
-  m_SizeDelta: {x: -0.49295044, y: 2.0538635}
+  m_AnchorMin: {x: 0.016, y: 0.076000005}
+  m_AnchorMax: {x: 0.1848153, y: 0.9236429}
+  m_AnchoredPosition: {x: 0.5, y: -0.051856995}
+  m_SizeDelta: {x: 0.793869, y: -0.6156235}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &781865439
 MonoBehaviour:
