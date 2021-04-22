@@ -8,20 +8,19 @@ public class Territory : MonoBehaviour
 {
     [SerializeField] private Image redProgressBar;
     [SerializeField] private Image greenProgressBar;
-    [SerializeField] private RectTransform treeSpiritRect;
+    [SerializeField] private RectTransform forestSpiritRect;
     [SerializeField] private RectTransform lavaSpiritRect;
     [SerializeField] private LeanTweenType buttonEase;
 
-    public float greenMaximum = 0;
-    public float redMaximum = 0;
-
     private const float territoryMin = 0.12f;
     private const float territoryMax = 0.87f;
-    private const float territoryDelta = 0.76f;
+    private const float territoryDelta = territoryMax - territoryMin;
 
-    int clicksToPass = 10;
+    int clicksToPass = 20;
+    [SerializeField] private float forestClickCounter = 1;
+    [SerializeField] private float lavaClickCounter = 1;
 
-    public UnityEvent DayTime;
+    public UnityEvent DawnDusk;
     private DayNight dayNight;
 
     private void Awake()
@@ -36,36 +35,8 @@ public class Territory : MonoBehaviour
         greenProgressBar.fillAmount = territoryMin;
 
         // Set buttons to initial size
-        treeSpiritRect.localScale = new Vector3(0.5f, 0.5f, 0);
+        forestSpiritRect.localScale = new Vector3(0.5f, 0.5f, 0);
         lavaSpiritRect.localScale = new Vector3(0.5f, 0.5f, 0);
-    }
-
-    private void Update()
-    {
-        if (dayNight.isDay)
-        {
-            // Grow Lava
-            //Debug.Log("Day Time!");
-            //StartCoroutine("test");
-            if (redProgressBar.fillAmount < territoryMax)
-                redProgressBar.fillAmount += territoryDelta / clicksToPass * Time.deltaTime; // * clickCounter
-
-            //Decay Forest
-            if (greenProgressBar.fillAmount > territoryMin)
-                greenProgressBar.fillAmount -= territoryDelta / clicksToPass * Time.deltaTime;
-        }
-
-        else if (!dayNight.isDay)
-        {
-            // Grow Forest
-            //Debug.Log("Night Time!");
-            if (greenProgressBar.fillAmount < territoryMax)
-                greenProgressBar.fillAmount += territoryDelta / clicksToPass * Time.deltaTime;
-
-            // Decay Lava
-            if (redProgressBar.fillAmount > territoryMin)
-                redProgressBar.fillAmount -= territoryDelta / clicksToPass * Time.deltaTime;
-        }
     }
 
     public void SpiritButton(RectTransform spirit)
@@ -80,58 +51,90 @@ public class Territory : MonoBehaviour
         {
             spirit.LeanScale(newScale, 0.8f).setEase(buttonEase);
         }
+        
+        if(spirit == forestSpiritRect && forestClickCounter < 10)
+        {
+            forestClickCounter += 1;
+        }
 
-        //if(spirit == treeSpiritRect)
-        //{
-        //    if (greenProgressBar.fillAmount < 0.87f)
-        //        greenProgressBar.fillAmount += 0.76f / clicksToPass;
-        //}
-        //else
-        //{
-        //    if (redProgressBar.fillAmount < 0.87f)
-        //        redProgressBar.fillAmount += 0.76f / clicksToPass;
-        //}        
+        if(spirit == lavaSpiritRect && lavaClickCounter < 10)
+        {
+            lavaClickCounter += 1;
+        }
+
+        spirit.gameObject.GetComponent<Button>().interactable = false;
     }
 
-
-    // TO DO - Add click counter for each button
     public void GrowAndDecay()
     {
+        var forestX = forestSpiritRect.localScale.x;
+        var lavaX = lavaSpiritRect.localScale.x;
+        var forestY = forestSpiritRect.localScale.y;
+        var lavaY = forestSpiritRect.localScale.y;
+
+        if (!forestSpiritRect.gameObject.GetComponent<Button>().interactable)
+        {
+            forestSpiritRect.gameObject.GetComponent<Button>().interactable = true;
+        }
+
+        if (!lavaSpiritRect.gameObject.GetComponent<Button>().interactable)
+        {
+            lavaSpiritRect.gameObject.GetComponent<Button>().interactable = true;
+        }
+
         // Check the isDay bool from the Day / Night script
         if (dayNight.isDay)
         {
             // Grow Lava
-            //Debug.Log("Day Time!");
-            //StartCoroutine("test");
-            //if (redProgressBar.fillAmount < territoryMax)
-            //    redProgressBar.fillAmount += territoryDelta / clicksToPass; // * clickCounter
+            Debug.Log("Day Time!");
+            if (redProgressBar.fillAmount < territoryMax)
+                redProgressBar.fillAmount += (territoryDelta / clicksToPass) * lavaClickCounter;
 
             // Decay Forest
-            //if (greenProgressBar.fillAmount > territoryMin)
-            //    greenProgressBar.fillAmount -= territoryDelta / clicksToPass;
+            if (greenProgressBar.fillAmount > territoryMin) 
+            {
+                greenProgressBar.fillAmount -= territoryDelta / clicksToPass;
+                
+                if (forestClickCounter > 1)
+                    forestClickCounter -= 0.5f;
+            }
+
+            // Check the bars are touching
+            if (greenProgressBar.fillAmount + redProgressBar.fillAmount >= 1)
+            {
+                // Equalise the progress bars
+                greenProgressBar.fillAmount = 1 - redProgressBar.fillAmount;
+
+                // Decrease the size of the forest spirit
+                forestSpiritRect.LeanScale(new Vector3(forestX - (0.5f / clicksToPass), forestY - (0.5f / clicksToPass), 0), 0.8f).setEase(buttonEase);
+            }
         }
 
         else if (!dayNight.isDay)
         {
             // Grow Forest
-            //Debug.Log("Night Time!");
-            //if (greenProgressBar.fillAmount < territoryMax)
-            //    greenProgressBar.fillAmount += territoryDelta / clicksToPass;
+            Debug.Log("Night Time!");
+            if (greenProgressBar.fillAmount < territoryMax)
+                greenProgressBar.fillAmount += territoryDelta / clicksToPass * forestClickCounter;
 
-            //// Decay Lava
-            //if (redProgressBar.fillAmount > territoryMin)
-            //    redProgressBar.fillAmount -= territoryDelta / clicksToPass;
+            // Decay Lava
+            if (redProgressBar.fillAmount > territoryMin) 
+            {
+                redProgressBar.fillAmount -= territoryDelta / clicksToPass;
+                
+                if(lavaClickCounter > 1)
+                    lavaClickCounter -= 0.5f;             
+            }
+
+            // Check the bars are touching
+            if (greenProgressBar.fillAmount + redProgressBar.fillAmount >= 1)
+            {
+                // Equalise the progress bars
+                redProgressBar.fillAmount = 1 - greenProgressBar.fillAmount;
+
+                // Decrease the size of the lava spirit
+                lavaSpiritRect.LeanScale(new Vector3(lavaX - (0.5f / clicksToPass), lavaY - (0.5f / clicksToPass), 0), 0.8f).setEase(buttonEase);
+            }
         }
-    }
-
-    IEnumerator test()
-    {
-        //if (redProgressBar.fillAmount < territoryMax)
-        //    redProgressBar.fillAmount += territoryDelta / clicksToPass;
-
-        //while (greenProgressBar.fillAmount > territoryMin)
-        //    greenProgressBar.fillAmount -= territoryDelta / clicksToPass * Time.deltaTime;
-
-        yield return null;
     }
 }
