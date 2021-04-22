@@ -106,7 +106,7 @@ public class Territory : MonoBehaviour
                 greenProgressBar.fillAmount = 1 - redProgressBar.fillAmount;
 
                 // Decrease the size of the forest spirit
-                forestSpiritRect.LeanScale(new Vector3(forestX - (forestX / clicksToPass), forestY - (forestY / clicksToPass), 0), 0.8f);
+                forestSpiritRect.LeanScale(new Vector3(forestX - (0.5f / clicksToPass), forestY - (0.5f / clicksToPass), 0), 0.8f).setEase(buttonEase);
             }
         }
 
@@ -133,7 +133,7 @@ public class Territory : MonoBehaviour
                 redProgressBar.fillAmount = 1 - greenProgressBar.fillAmount;
 
                 // Decrease the size of the lava spirit
-                
+                lavaSpiritRect.LeanScale(new Vector3(lavaX - (0.5f / clicksToPass), lavaY - (0.5f / clicksToPass), 0), 0.8f).setEase(buttonEase);
             }
         }
     }
