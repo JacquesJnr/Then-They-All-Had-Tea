@@ -42,7 +42,30 @@ public class Territory : MonoBehaviour
 
     private void Update()
     {
-      
+        if (dayNight.isDay)
+        {
+            // Grow Lava
+            //Debug.Log("Day Time!");
+            //StartCoroutine("test");
+            if (redProgressBar.fillAmount < territoryMax)
+                redProgressBar.fillAmount += territoryDelta / clicksToPass * Time.deltaTime; // * clickCounter
+
+            //Decay Forest
+            if (greenProgressBar.fillAmount > territoryMin)
+                greenProgressBar.fillAmount -= territoryDelta / clicksToPass * Time.deltaTime;
+        }
+
+        else if (!dayNight.isDay)
+        {
+            // Grow Forest
+            //Debug.Log("Night Time!");
+            if (greenProgressBar.fillAmount < territoryMax)
+                greenProgressBar.fillAmount += territoryDelta / clicksToPass * Time.deltaTime;
+
+            // Decay Lava
+            if (redProgressBar.fillAmount > territoryMin)
+                redProgressBar.fillAmount -= territoryDelta / clicksToPass * Time.deltaTime;
+        }
     }
 
     public void SpiritButton(RectTransform spirit)
@@ -78,25 +101,37 @@ public class Territory : MonoBehaviour
         if (dayNight.isDay)
         {
             // Grow Lava
-            Debug.Log("Day Time!");
-            if (redProgressBar.fillAmount < territoryMax)
-                redProgressBar.fillAmount += territoryDelta / clicksToPass; // * clickCounter
+            //Debug.Log("Day Time!");
+            //StartCoroutine("test");
+            //if (redProgressBar.fillAmount < territoryMax)
+            //    redProgressBar.fillAmount += territoryDelta / clicksToPass; // * clickCounter
 
             // Decay Forest
-            if (greenProgressBar.fillAmount > territoryMin)
-                greenProgressBar.fillAmount -= territoryDelta / clicksToPass;
+            //if (greenProgressBar.fillAmount > territoryMin)
+            //    greenProgressBar.fillAmount -= territoryDelta / clicksToPass;
         }
 
         else if (!dayNight.isDay)
         {
             // Grow Forest
-            Debug.Log("Night Time!");
-            if (greenProgressBar.fillAmount < territoryMax)
-                greenProgressBar.fillAmount += territoryDelta / clicksToPass;
+            //Debug.Log("Night Time!");
+            //if (greenProgressBar.fillAmount < territoryMax)
+            //    greenProgressBar.fillAmount += territoryDelta / clicksToPass;
 
-            // Decay Lava
-            if (redProgressBar.fillAmount > territoryMin)
-                redProgressBar.fillAmount -= territoryDelta / clicksToPass;
+            //// Decay Lava
+            //if (redProgressBar.fillAmount > territoryMin)
+            //    redProgressBar.fillAmount -= territoryDelta / clicksToPass;
         }
+    }
+
+    IEnumerator test()
+    {
+        //if (redProgressBar.fillAmount < territoryMax)
+        //    redProgressBar.fillAmount += territoryDelta / clicksToPass;
+
+        //while (greenProgressBar.fillAmount > territoryMin)
+        //    greenProgressBar.fillAmount -= territoryDelta / clicksToPass * Time.deltaTime;
+
+        yield return null;
     }
 }
