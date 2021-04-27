@@ -10,6 +10,7 @@ public class Territory : MonoBehaviour
     [SerializeField] private Image greenProgressBar;
     [SerializeField] private RectTransform forestSpiritRect;
     [SerializeField] private RectTransform lavaSpiritRect;
+    [SerializeField] private CanvasGroup waterNeutral, waterLeafy, waterHot;
     [SerializeField] private LeanTweenType buttonEase;
 
     private const float territoryMin = 0.12f;
@@ -22,6 +23,8 @@ public class Territory : MonoBehaviour
 
     public UnityEvent DawnDusk;
     private DayNight dayNight;
+
+    public bool isTouching;
 
     private void Awake()
     {
@@ -42,6 +45,18 @@ public class Territory : MonoBehaviour
     private void Update()
     {
         GrowAndDecay();
+
+        float forestScaler = ((0.5f * greenProgressBar.fillAmount) / territoryDelta) + 0.25f;
+        float lavaScaler = ((0.5f * redProgressBar.fillAmount) / territoryDelta) + 0.25f;
+
+        Vector3 forestButtonScale = new Vector3(forestScaler, forestScaler, 0);
+        Vector3 lavaButtonScale = new Vector3(lavaScaler, lavaScaler, 0);
+
+        if (isTouching)
+        {           
+            forestSpiritRect.LeanScale(forestButtonScale, 0.8f).setEase(LeanTweenType.easeInSine);
+            lavaSpiritRect.LeanScale(lavaButtonScale, 0.8f).setEase(LeanTweenType.easeInSine);
+        }
     }
 
     public void SpiritButton(RectTransform spirit)
@@ -84,6 +99,22 @@ public class Territory : MonoBehaviour
 
         if (lavaClickCounter > 1)
             lavaClickCounter -= 0.5f;
+
+        // Check the lava teritory is past the water
+        if (redProgressBar.fillAmount > 0.62f)
+        {
+            waterNeutral.LeanAlpha(0, 0.8f).setEase(LeanTweenType.easeInOutSine);
+            waterLeafy.LeanAlpha(0, 0.8f).setEase(LeanTweenType.easeInOutSine);
+            waterHot.LeanAlpha(1, 0.8f).setEase(LeanTweenType.easeInOutSine);
+        }
+
+        // Check the forest teritory is past the water
+        if (greenProgressBar.fillAmount > 0.62f)
+        {
+            waterNeutral.LeanAlpha(0, 0.8f).setEase(LeanTweenType.easeInOutSine);
+            waterHot.LeanAlpha(0, 0.8f).setEase(LeanTweenType.easeInOutSine);
+            waterLeafy.LeanAlpha(1, 0.8f).setEase(LeanTweenType.easeInOutSine);
+        }
     }
 
     public void GrowAndDecay()
@@ -93,8 +124,8 @@ public class Territory : MonoBehaviour
         var forestY = forestSpiritRect.localScale.y;
         var lavaY = lavaSpiritRect.localScale.y;
 
-        Vector3 smallForest = new Vector3(forestX - (0.5f / clicksToPass), forestY - (0.5f / clicksToPass), 0);
-        Vector3 smallLava = new Vector3(lavaX - (0.5f / clicksToPass), lavaY - (0.5f / clicksToPass), 0);
+        Vector3 smallForest = new Vector3(1 - lavaX, 1 - lavaY, 0);
+        Vector3 smallLava = new Vector3(1 - forestX, 1 - forestY, 0);
 
 
         // Check the isDay bool from the Day / Night script
@@ -112,11 +143,10 @@ public class Territory : MonoBehaviour
             // Check the bars are touching
             if (greenProgressBar.fillAmount + redProgressBar.fillAmount >= 1)
             {
+                isTouching = true;
+
                 // Equalise the progress bars
                 greenProgressBar.fillAmount = 1 - redProgressBar.fillAmount;
-
-                // Decrease the size of the forest spirit
-                forestSpiritRect.LeanScale(smallForest, 0.8f).setEase(buttonEase);
             }
         }
 
@@ -134,12 +164,11 @@ public class Territory : MonoBehaviour
             // Check the bars are touching
             if (greenProgressBar.fillAmount + redProgressBar.fillAmount >= 1)
             {
-                // Equalise the progress bars
-                redProgressBar.fillAmount = 1 - greenProgressBar.fillAmount;
+                isTouching = true;
 
-                // Decrease the size of the lava spirit
-                lavaSpiritRect.LeanScale(smallLava, 0.8f).setEase(buttonEase);
-            }
+                // Equalise the progress bars
+                redProgressBar.fillAmount = 1 - greenProgressBar.fillAmount;             
+            }          
         }
     }
 }
