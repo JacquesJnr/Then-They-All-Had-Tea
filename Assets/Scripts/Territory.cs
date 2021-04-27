@@ -100,21 +100,23 @@ public class Territory : MonoBehaviour
         if (lavaClickCounter > 1)
             lavaClickCounter -= 0.5f;
 
+        // WATER TRANSISTIONS
+
         // Check the lava teritory is past the water
-        if (redProgressBar.fillAmount > 0.62f)
-        {
-            waterNeutral.LeanAlpha(0, 0.8f).setEase(LeanTweenType.easeInOutSine);
-            waterLeafy.LeanAlpha(0, 0.8f).setEase(LeanTweenType.easeInOutSine);
-            waterHot.LeanAlpha(1, 0.8f).setEase(LeanTweenType.easeInOutSine);
-        }
+        //if (redProgressBar.fillAmount > 0.62f)
+        //{
+        //    waterNeutral.LeanAlpha(0, 0.8f).setEase(LeanTweenType.easeInOutSine);
+        //    waterLeafy.LeanAlpha(0, 0.8f).setEase(LeanTweenType.easeInOutSine);
+        //    waterHot.LeanAlpha(1, 0.8f).setEase(LeanTweenType.easeInOutSine);
+        //}
 
         // Check the forest teritory is past the water
-        if (greenProgressBar.fillAmount > 0.62f)
-        {
-            waterNeutral.LeanAlpha(0, 0.8f).setEase(LeanTweenType.easeInOutSine);
-            waterHot.LeanAlpha(0, 0.8f).setEase(LeanTweenType.easeInOutSine);
-            waterLeafy.LeanAlpha(1, 0.8f).setEase(LeanTweenType.easeInOutSine);
-        }
+        //if (greenProgressBar.fillAmount > 0.62f)
+        //{
+        //    waterNeutral.LeanAlpha(0, 0.8f).setEase(LeanTweenType.easeInOutSine);
+        //    waterHot.LeanAlpha(0, 0.8f).setEase(LeanTweenType.easeInOutSine);
+        //    waterLeafy.LeanAlpha(1, 0.8f).setEase(LeanTweenType.easeInOutSine);
+        //}
     }
 
     public void GrowAndDecay()
