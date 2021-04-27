@@ -156,7 +156,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.7142593, y: 0.56250554}
   m_AnchorMax: {x: 0.96700007, y: 0.98624176}
-  m_AnchoredPosition: {x: 143, y: -287}
+  m_AnchoredPosition: {x: 142.99998, y: -287}
   m_SizeDelta: {x: 0, y: -2.0999985}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &47400465
@@ -368,7 +368,6 @@ GameObject:
   - component: {fileID: 281103220}
   - component: {fileID: 281103221}
   - component: {fileID: 281103222}
-  - component: {fileID: 281103223}
   m_Layer: 0
   m_Name: Territory Manager
   m_TagString: Untagged
@@ -443,36 +442,6 @@ MonoBehaviour:
   day_bg: {fileID: 1909763259}
   night_bg: {fileID: 911479252}
   isDay: 1
---- !u!114 &281103223
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 281103219}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 816232c3b205f3046af6f627192b29af, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  storyBeats: {fileID: 793385057}
-  lavaSpirit: {fileID: 47400464}
-  forestSpirit: {fileID: 1646369634}
-  playText: {fileID: 1674782040}
-  onClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 281103223}
-        m_MethodName: FadeIn
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1 &289705274
 GameObject:
   m_ObjectHideFlags: 0
@@ -2032,7 +2001,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 2
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -2042,10 +2011,11 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
+    m_HighlightedSprite: {fileID: 21300000, guid: 532dade22d78bfe46a88a63e574db5eb,
+      type: 3}
+    m_PressedSprite: {fileID: 21300000, guid: 532dade22d78bfe46a88a63e574db5eb, type: 3}
+    m_SelectedSprite: {fileID: 21300000, guid: 532dade22d78bfe46a88a63e574db5eb, type: 3}
+    m_DisabledSprite: {fileID: 21300000, guid: 7e177770109995540b567e5c8ff4a2d2, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
@@ -2161,7 +2131,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 2
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -2171,10 +2141,11 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
+    m_HighlightedSprite: {fileID: 21300000, guid: 3b5f8045d69193142926ee3470d962cf,
+      type: 3}
+    m_PressedSprite: {fileID: 21300000, guid: 3b5f8045d69193142926ee3470d962cf, type: 3}
+    m_SelectedSprite: {fileID: 21300000, guid: 3b5f8045d69193142926ee3470d962cf, type: 3}
+    m_DisabledSprite: {fileID: 21300000, guid: 491018c946a11564693c654a5e0a4ca9, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
