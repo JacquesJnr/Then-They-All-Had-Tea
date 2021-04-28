@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DayNight : MonoBehaviour
+public class PushPullCycle : MonoBehaviour
 {
     [SerializeField] public const float timer = 3.5f;
     [Range(0, timer)] public float elapsed = 0;
     [SerializeField] private CanvasGroup day_bg, night_bg;
-    public bool isDay = true;
+    public bool Push = true;
 
     private Territory territory;
 
@@ -26,14 +26,14 @@ public class DayNight : MonoBehaviour
         if(elapsed >= timer)
         {
             // Fade between backgrounds.
-            FadeInOut(isDay);
+            FadeInOut(Push);
 
-            if (isDay)
-                isDay = false;
+            if (Push)
+                Push = false;
             else
-                isDay = true;
+                Push = true;
 
-            territory.DawnDusk.Invoke();
+            territory.GrowDecayCycle.Invoke();
             elapsed = 0;
         }
     }
