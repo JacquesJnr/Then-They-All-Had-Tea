@@ -6,21 +6,23 @@ using UnityEngine.Events;
 
 public class ClickToPlay : MonoBehaviour
 {
-    public CanvasGroup storyBeats;
-    public RectTransform lavaSpirit, forestSpirit;
+    //public CanvasGroup storyBeats;
+    public RectTransform lavaSpirit, forestSpirit, earthSpirit, skySpirit;
     public CanvasGroup playText;
     public UnityEvent onClick;
 
-    private DayNight timeCycle;
+    private PushPullCycle timeCycle;
     private Territory territory;
 
-    private void Awake()
+    private void Start()
     {
         lavaSpirit.LeanAlpha(0, 0);
         forestSpirit.LeanAlpha(0, 0);
-        storyBeats.alpha = 0;
+        earthSpirit.LeanAlpha(0, 0);
+        skySpirit.LeanAlpha(0, 0);
+        //storyBeats.alpha = 0;
         
-        timeCycle = FindObjectOfType<DayNight>();
+        timeCycle = FindObjectOfType<PushPullCycle>();
         territory = FindObjectOfType<Territory>();
 
         timeCycle.enabled = false;
@@ -39,8 +41,10 @@ public class ClickToPlay : MonoBehaviour
     {
         lavaSpirit.LeanAlpha(1, 1.5f).setEase(LeanTweenType.easeOutSine);
         forestSpirit.LeanAlpha(1, 1.5f).setEase(LeanTweenType.easeOutSine);
+        earthSpirit.LeanAlpha(1, 1.5f).setEase(LeanTweenType.easeOutSine);
+        skySpirit.LeanAlpha(1, 1.5f).setEase(LeanTweenType.easeOutSine);
 
-        storyBeats.LeanAlpha(1, 2f).setEase(LeanTweenType.easeOutSine);
+        //storyBeats.LeanAlpha(1, 2f).setEase(LeanTweenType.easeOutSine);
 
         playText.LeanAlpha(0, 0.5f).setEase(LeanTweenType.easeInSine);
         timeCycle.enabled = true;
