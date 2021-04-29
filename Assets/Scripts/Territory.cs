@@ -53,6 +53,13 @@ public class Territory : MonoBehaviour
     public bool hasBowl; // Weather, and water can begin
     public bool earthAboveWater; // Forest & Lava should move
 
+    // Weather Enum
+    enum Weather { None, Mudslide, Wind, Hurricane, Thunder }
+    int WeatherChance;
+    Weather currentWeather;
+    bool pullFlag = false;
+    bool pushFlag = false;
+
     private void Awake()
     {
         menuScript = FindObjectOfType<ClickToPlay>();        
@@ -61,6 +68,9 @@ public class Territory : MonoBehaviour
 
     private void Start()
     {
+        // Default weather setting is none
+        currentWeather = Weather.None;
+
         // Set each territory to it's minimum value
         lavaMeter.fillAmount = territoryMin;
         forestMeter.fillAmount = territoryMin;
@@ -121,6 +131,17 @@ public class Territory : MonoBehaviour
         //    theEarth.transform.position = new Vector3(0, , 0);
         //    theEarth.transform.position = new Vector3(0, 0, 0);
         //}
+
+        //if (WeatherVal == 0)
+        //    Debug.Log("No Weather");
+        //else if (WeatherVal == 1)
+        //    Debug.Log("Mudslide");
+        //else if (WeatherVal == 2)
+        //    Debug.Log("Wind");
+        //else if (WeatherVal == 3)
+        //    Debug.Log("Hurricane");
+        //else if (WeatherVal == 4)
+        //    Debug.Log("Thunder");
 
     }
 
@@ -243,6 +264,28 @@ public class Territory : MonoBehaviour
         // Check the Push bool from the Day / Night script
         if (pushPull.Push)
         {
+            pullFlag = false;
+            // Set Weather to none if Mudslide or Wind is not happening
+            if (currentWeather != Weather.Hurricane || currentWeather != Weather.Thunder)
+            {
+                currentWeather = Weather.None;
+                WeatherChance = Random.Range(1, 100);
+            }
+
+            // If no weather effect randomly set weather at 15% chance
+            if (currentWeather == Weather.None)
+            {
+                // Check only once since this runs every frame
+                // Sets weather to either hurricane or thunder
+                if (WeatherChance <= 25 && !pushFlag)
+                {
+                    // Random Max value is not inclusive
+                    currentWeather = (Weather)Random.Range((float)Weather.Hurricane, (float)Weather.Thunder + 1);
+                    Debug.Log("Current Push weather: " + currentWeather);
+                }
+                pushFlag = true;
+            }
+
             Debug.Log("Push!");
 
             // Grow Lava
@@ -272,6 +315,29 @@ public class Territory : MonoBehaviour
 
         else if (!pushPull.Push)
         {
+            pushFlag = false;
+            // Set Weather to none if Mudslide or Wind is not happening
+            if (currentWeather != Weather.Mudslide || currentWeather != Weather.Wind)
+            {
+                //WeatherVal = 0;
+                currentWeather = Weather.None;
+                WeatherChance = Random.Range(1, 100);
+            }
+
+            // If no weather effect randomly set weather at 15% chance
+            if (currentWeather == Weather.None)
+            {
+                // Check only once since this runs every frame
+                // Sets weather to either mudslide or wind
+                if (WeatherChance <= 25 && !pullFlag)
+                {
+                    // Random Max value is not inclusive
+                    currentWeather = (Weather)Random.Range((float)Weather.Mudslide, (float)Weather.Wind + 1);
+                    Debug.Log("Current Pull weather: " + currentWeather);
+                }
+                pullFlag = true;
+            }
+
             Debug.Log("Pull!");
 
             // Grow Forest
