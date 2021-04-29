@@ -52,6 +52,13 @@ public class Territory : MonoBehaviour
     public bool isTouching;
     public bool hasBowl; // Weather, and water can begin
     public bool earthAboveWater; // Forest & Lava should move
+    
+    private bool storyOne;
+    private bool storyThree;
+    private bool storySix;  
+    private bool storySeven;
+    private bool lavaCross;
+    private bool forestCross;
 
     // Weather Enum
     enum Weather { None, Mudslide, Wind, Hurricane, Thunder }
@@ -61,7 +68,6 @@ public class Territory : MonoBehaviour
     bool pushFlag = false;
 
 
-    // Test
     private void Awake()
     {
         menuScript = FindObjectOfType<ClickToPlay>();        
@@ -108,6 +114,7 @@ public class Territory : MonoBehaviour
     private void Update()
     {
         EarthSky();
+        StoryEvents();
 
         if (earthAboveWater)
         {
@@ -133,17 +140,6 @@ public class Territory : MonoBehaviour
         //    theEarth.transform.position = new Vector3(0, , 0);
         //    theEarth.transform.position = new Vector3(0, 0, 0);
         //}
-
-        //if (WeatherVal == 0)
-        //    Debug.Log("No Weather");
-        //else if (WeatherVal == 1)
-        //    Debug.Log("Mudslide");
-        //else if (WeatherVal == 2)
-        //    Debug.Log("Wind");
-        //else if (WeatherVal == 3)
-        //    Debug.Log("Hurricane");
-        //else if (WeatherVal == 4)
-        //    Debug.Log("Thunder");
 
     }
 
@@ -288,8 +284,6 @@ public class Territory : MonoBehaviour
                 pushFlag = true;
             }
 
-            Debug.Log("Push!");
-
             // Grow Lava
             if (lavaMeter.fillAmount < territoryMax)
                 lavaMeter.fillAmount += ((territoryDelta / horizontalClicks) * lavaClickCounter) * Time.deltaTime;
@@ -339,8 +333,6 @@ public class Territory : MonoBehaviour
                 }
                 pullFlag = true;
             }
-
-            Debug.Log("Pull!");
 
             // Grow Forest
             if (forestMeter.fillAmount < territoryMax)
@@ -424,5 +416,64 @@ public class Territory : MonoBehaviour
             }
         }
 
-    }   
+    }
+
+    public int StoryEvents()
+    {
+        //Intro
+        if (!storyOne)
+        {
+            Debug.Log("1");
+            storyOne = true;
+            return 1;
+        }
+        // Earth & Sky - No Bowl
+        else if (!hasBowl && earthAboveWater)
+        {
+            Debug.Log("2");
+            storySeven = true;
+            return 2;
+        }
+        // Earth & Sky - Has Bowl
+        else if (hasBowl && !storyThree)
+        {
+            Debug.Log("3");
+            storyThree = true;
+            return 3;
+        }
+        // Lava crossing mid 
+        else if (lavaMeter.fillAmount >= transistionPoint & !lavaCross)
+        {
+            lavaCross = true;
+            Debug.Log("4");
+            return 4;
+        }
+        // Forest crossing mid 
+        else if (forestMeter.fillAmount >= transistionPoint && !forestCross)
+        {
+            forestCross = true;
+            Debug.Log("5");
+            return 5;
+        }
+        // Forest & Lava meet
+        else if (isTouching && !storySix)
+        {
+            storySix = true;
+            Debug.Log("6");
+            return 6;
+        }
+        // Drowned Earth - No Bowl
+        else if (storySeven && !earthAboveWater)
+        {
+            Debug.Log("7");
+            return 7;
+        }
+        // Tea Party
+        //else if(isTouching && hasBowl)
+        //{
+        //    return 8;
+        //}
+        else
+            return 0;
+    }
 }
