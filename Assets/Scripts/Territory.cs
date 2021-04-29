@@ -586,10 +586,20 @@ public class Territory : MonoBehaviour
             return 7;
         }
         // Tea Party
-        //else if(isTouching && hasBowl)
-        //{
-        //    return 8;
-        //}
+        else if (isTouching && hasBowl) // TO DO: forestMeter.fillAmount >= 0.425f && forestMeter.fillAmount <= 0.575f
+        {
+            // TO DO: lavaMeter.fillAmount >= 0.425f && lavaMeter.fillAmount <= 0.575f
+            
+            // Start a timer as long as the conditions have been met
+
+            // elpasedTime ++ 
+
+            // if elapsedTime == 3.5 secs 
+
+            // TEA!
+
+            return 8;
+        }
         else
             return 0;
     }

@@ -9,6 +9,7 @@ public class PopUps : MonoBehaviour
     private void Start()
     {
         territory = FindObjectOfType<Territory>();
+
     }
 
     private void Update()
