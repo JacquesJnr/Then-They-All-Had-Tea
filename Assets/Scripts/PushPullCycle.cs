@@ -7,7 +7,6 @@ public class PushPullCycle : MonoBehaviour
 {
     [SerializeField] public const float timer = 3.5f;
     [Range(0, timer)] public float elapsed = 0;
-    [SerializeField] private CanvasGroup day_bg, night_bg;
     public bool Push = true;
 
     private Territory territory;
@@ -15,8 +14,6 @@ public class PushPullCycle : MonoBehaviour
     void Awake()
     {
         territory = FindObjectOfType<Territory>();
-        night_bg.alpha = 0;
-        day_bg.alpha = 1;
     }
 
     void Update()
@@ -25,9 +22,6 @@ public class PushPullCycle : MonoBehaviour
 
         if(elapsed >= timer)
         {
-            // Fade between backgrounds.
-            FadeInOut(Push);
-
             if (Push)
                 Push = false;
             else
@@ -36,21 +30,5 @@ public class PushPullCycle : MonoBehaviour
             territory.GrowDecayCycle.Invoke();
             elapsed = 0;
         }
-    }
-
-    public void FadeInOut(bool isDay)
-    {
-        if (isDay) 
-        {
-            day_bg.LeanAlpha(0, 0.5f); // Fade day sky out
-            night_bg.LeanAlpha(1, 0.5f); // Fade night sky in
-            
-        }
-        else 
-        {
-            day_bg.LeanAlpha(1, 0.5f); // Fade day sky in
-            night_bg.LeanAlpha(0, 0.5f); // Fade night sky out
-        }
-            
     }
 }
