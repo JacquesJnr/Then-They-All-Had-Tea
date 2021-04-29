@@ -60,6 +60,8 @@ public class Territory : MonoBehaviour
     bool pullFlag = false;
     bool pushFlag = false;
 
+
+    // Test
     private void Awake()
     {
         menuScript = FindObjectOfType<ClickToPlay>();        
