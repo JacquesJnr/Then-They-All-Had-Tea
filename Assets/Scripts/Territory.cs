@@ -60,6 +60,12 @@ public class Territory : MonoBehaviour
     private bool lavaCross;
     private bool forestCross;
 
+    // Weather Enum
+    enum Weather { None, Mudslide, Wind, Hurricane, Thunder }
+    int WeatherChance;
+    Weather currentWeather;
+    bool pullFlag = false;
+    bool pushFlag = false;
 
 
     private void Awake()
@@ -70,6 +76,9 @@ public class Territory : MonoBehaviour
 
     private void Start()
     {
+        // Default weather setting is none
+        currentWeather = Weather.None;
+
         // Set each territory to it's minimum value
         lavaMeter.fillAmount = territoryMin;
         forestMeter.fillAmount = territoryMin;
@@ -253,7 +262,27 @@ public class Territory : MonoBehaviour
         // Check the Push bool from the Day / Night script
         if (pushPull.Push)
         {
-            Debug.Log("Push!");
+            pullFlag = false;
+            // Set Weather to none if Mudslide or Wind is not happening
+            if (currentWeather != Weather.Hurricane || currentWeather != Weather.Thunder)
+            {
+                currentWeather = Weather.None;
+                WeatherChance = Random.Range(1, 100);
+            }
+
+            // If no weather effect randomly set weather at 15% chance
+            if (currentWeather == Weather.None)
+            {
+                // Check only once since this runs every frame
+                // Sets weather to either hurricane or thunder
+                if (WeatherChance <= 25 && !pushFlag)
+                {
+                    // Random Max value is not inclusive
+                    currentWeather = (Weather)Random.Range((float)Weather.Hurricane, (float)Weather.Thunder + 1);
+                    Debug.Log("Current Push weather: " + currentWeather);
+                }
+                pushFlag = true;
+            }
 
             // Grow Lava
             if (lavaMeter.fillAmount < territoryMax)
@@ -282,7 +311,28 @@ public class Territory : MonoBehaviour
 
         else if (!pushPull.Push)
         {
-            Debug.Log("Pull!");
+            pushFlag = false;
+            // Set Weather to none if Mudslide or Wind is not happening
+            if (currentWeather != Weather.Mudslide || currentWeather != Weather.Wind)
+            {
+                //WeatherVal = 0;
+                currentWeather = Weather.None;
+                WeatherChance = Random.Range(1, 100);
+            }
+
+            // If no weather effect randomly set weather at 15% chance
+            if (currentWeather == Weather.None)
+            {
+                // Check only once since this runs every frame
+                // Sets weather to either mudslide or wind
+                if (WeatherChance <= 25 && !pullFlag)
+                {
+                    // Random Max value is not inclusive
+                    currentWeather = (Weather)Random.Range((float)Weather.Mudslide, (float)Weather.Wind + 1);
+                    Debug.Log("Current Pull weather: " + currentWeather);
+                }
+                pullFlag = true;
+            }
 
             // Grow Forest
             if (forestMeter.fillAmount < territoryMax)
