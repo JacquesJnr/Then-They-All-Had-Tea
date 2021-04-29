@@ -67,6 +67,11 @@ public class Territory : MonoBehaviour
     bool pullFlag = false;
     bool pushFlag = false;
 
+    // Decay rates
+    public float EarthDecayRate = 1f;
+    public float SkyDecayRate = 1f;
+    public float ForestDecayRate = 1f;
+    public float LavaDecayRate = 1f;
 
     private void Awake()
     {
@@ -217,6 +222,15 @@ public class Territory : MonoBehaviour
         if (skyClickCounter > 1)
             skyClickCounter -= 0.25f;
 
+        if (LavaDecayRate > 1f)
+            LavaDecayRate -= 0.25f;
+        if (SkyDecayRate > 1f)
+            SkyDecayRate -= 0.25f;
+        if (EarthDecayRate > 1f)
+            EarthDecayRate -= 0.25f;
+        if (ForestDecayRate > 1f)
+            ForestDecayRate -= 0.25f;
+
 
         //-------------------
         // WATER TRANSISTIONS
@@ -255,6 +269,15 @@ public class Territory : MonoBehaviour
         Vector3 smallForest = new Vector3(1 - lavaX, 1 - lavaY, 0);
         Vector3 smallLava = new Vector3(1 - forestX, 1 - forestY, 0);
 
+        // Check for Wind
+        if (currentWeather == Weather.Wind)
+            LavaDecayRate += 1f;
+
+        // Check for Thunder
+        if (currentWeather == Weather.Thunder)
+            ForestDecayRate += 1f;
+
+
         //-------------------
         // PUSH CYCLE
         //-------------------
@@ -291,7 +314,7 @@ public class Territory : MonoBehaviour
 
             // Decay Forest
             if (forestMeter.fillAmount > territoryMin)
-                forestMeter.fillAmount -= (territoryDelta / horizontalClicks) * Time.deltaTime;
+                forestMeter.fillAmount -= (territoryDelta / horizontalClicks) * ForestDecayRate * Time.deltaTime;
 
 
 
@@ -341,7 +364,7 @@ public class Territory : MonoBehaviour
 
             // Decay Lava
             if (lavaMeter.fillAmount > territoryMin)
-                lavaMeter.fillAmount -= (territoryDelta / horizontalClicks) * Time.deltaTime;
+                lavaMeter.fillAmount -= (territoryDelta / horizontalClicks) * LavaDecayRate * Time.deltaTime;
 
 
             // Check the bars are touching
@@ -379,7 +402,14 @@ public class Territory : MonoBehaviour
             hasBowl = false;
             earthAboveWater = false;
         }
-            
+
+        // Check for Mudslide
+        if (currentWeather == Weather.Mudslide)
+            EarthDecayRate += 1f;
+
+        // Check for Hurricane
+        if (currentWeather == Weather.Hurricane)
+            SkyDecayRate += 1f;
 
 
         if (pushPull.Push)
@@ -394,7 +424,7 @@ public class Territory : MonoBehaviour
             // Decay Sky
             if (theSky.transform.position.y < skyMin + (skyClickCounter / verticalClicks))
             {
-                skyVector = new Vector3(0, step, 0);
+                skyVector = new Vector3(0, step * SkyDecayRate, 0);
                 theSky.transform.position += (skyVector / earthSkyDelta * verticalClicks);
             }
         }
@@ -411,7 +441,7 @@ public class Territory : MonoBehaviour
             // Decay Earth
             if (theEarth.transform.position.y > earthMin + (earthClickCounter / verticalClicks))
             {
-                landVector = new Vector3(0, step, 0);
+                landVector = new Vector3(0, step * EarthDecayRate, 0);
                 theEarth.transform.position -= (landVector / earthSkyDelta * verticalClicks);
             }
         }
