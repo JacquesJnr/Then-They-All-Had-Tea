@@ -19,6 +19,15 @@ public class Territory : MonoBehaviour
     [SerializeField] private RectTransform earthSpirit;
 
     [SerializeField] private CanvasGroup neutral, leafy, hot, tea;
+    [SerializeField] private CanvasGroup hurricanPopup, thunderPopup, windPopup, mudPopup;
+    [SerializeField] private GameObject weatherPopups;
+
+    [SerializeField] private GameObject closeButton;
+    private Sprite closeButtonSprite;
+    
+    [SerializeField] private Sprite closeButtonBlue;
+    [SerializeField] private Sprite closeButtonYellow;
+
     [SerializeField] private LeanTweenType buttonEase;
     [SerializeField] private LeanTweenType sine;
 
@@ -61,7 +70,7 @@ public class Territory : MonoBehaviour
     private bool forestCross;
 
     // Weather Enum
-    enum Weather { None, Mudslide, Wind, Hurricane, Thunder }
+    public enum Weather { None, Mudslide, Wind, Hurricane, Thunder }
     int WeatherChance;
     Weather currentWeather;
     bool pullFlag = false;
@@ -102,6 +111,9 @@ public class Territory : MonoBehaviour
 
         lavaMeterAlpha.alpha = 0;
         forestMeterAlpha.alpha = 0;
+
+        closeButton.SetActive(false);
+        closeButtonSprite = closeButton.GetComponent<Image>().sprite;
 
         // Hide the different water variations
         neutral.alpha = 1;
@@ -191,6 +203,13 @@ public class Territory : MonoBehaviour
             lava.LeanAlpha(1, fadeTime).setEase(sine);
             forest.LeanAlpha(1, fadeTime).setEase(sine);
         }
+        else
+        {
+            lavaMeterAlpha.LeanAlpha(0, fadeTime).setEase(sine);
+            forestMeterAlpha.LeanAlpha(0, fadeTime).setEase(sine);
+            lava.LeanAlpha(0, fadeTime).setEase(sine);
+            forest.LeanAlpha(0, fadeTime).setEase(sine);
+        }
 
         // If any of the spirit buttons are incavtive, enable them
         if (!forest.gameObject.GetComponent<Button>().interactable)
@@ -270,13 +289,25 @@ public class Territory : MonoBehaviour
         Vector3 smallLava = new Vector3(1 - forestX, 1 - forestY, 0);
 
         // Check for Wind
-        if (currentWeather == Weather.Wind)
-            LavaDecayRate += 1f;
+        if (currentWeather == Weather.Wind) 
+        {           
+            if (storyThree)
+            {
+                LavaDecayRate += 1f;
+                WeatherEvent(currentWeather);
+            }           
+        }            
 
         // Check for Thunder
-        if (currentWeather == Weather.Thunder)
-            ForestDecayRate += 1f;
+        if (currentWeather == Weather.Thunder) 
+        {
 
+            if (storyThree)
+            {
+                ForestDecayRate += 1f;
+                WeatherEvent(currentWeather);
+            }
+        }
 
         //-------------------
         // PUSH CYCLE
@@ -404,13 +435,24 @@ public class Territory : MonoBehaviour
         }
 
         // Check for Mudslide
-        if (currentWeather == Weather.Mudslide)
-            EarthDecayRate += 1f;
+        if (currentWeather == Weather.Mudslide) 
+        {           
+            if (storyThree)
+            {
+                EarthDecayRate += 1f;
+                WeatherEvent(currentWeather);
+            }
+        }            
 
         // Check for Hurricane
-        if (currentWeather == Weather.Hurricane)
-            SkyDecayRate += 1f;
-
+        if (currentWeather == Weather.Hurricane) 
+        {           
+            if (storyThree)
+            {
+                SkyDecayRate += 1f;
+                WeatherEvent(currentWeather);
+            }
+        }
 
         if (pushPull.Push)
         {
@@ -446,6 +488,51 @@ public class Territory : MonoBehaviour
             }
         }
 
+    }
+
+    // Display weather pop-ups
+    public void WeatherEvent(Weather weather)
+    {
+        weatherPopups.SetActive(true);
+        closeButton.SetActive(true);
+        weatherPopups.GetComponentInChildren<CanvasGroup>().alpha = 0;
+
+        switch (weather)
+        {
+            //Push weathers
+            case Weather.Hurricane:
+                hurricanPopup.LeanAlpha(1, fadeTime).setEase(sine).setOnComplete(StopTime);
+                closeButton.GetComponent<Image>().sprite = closeButtonYellow;
+                break;
+            case Weather.Thunder:
+                thunderPopup.LeanAlpha(1, fadeTime).setEase(sine).setOnComplete(StopTime);
+                closeButton.GetComponent<Image>().sprite = closeButtonBlue;
+                break;
+            // Pull Weathers
+            case Weather.Wind:
+                windPopup.LeanAlpha(1, fadeTime).setEase(sine).setOnComplete(StopTime);
+                closeButton.GetComponent<Image>().sprite = closeButtonBlue;
+                break;
+            case Weather.Mudslide:
+                mudPopup.LeanAlpha(1, fadeTime).setEase(sine).setOnComplete(StopTime);
+                closeButton.GetComponent<Image>().sprite = closeButtonYellow;
+                break;
+        }
+    }
+
+    // Close the weather pop-up
+    public void CloseMe()
+    {
+        closeButton.SetActive(false);
+        weatherPopups.SetActive(false);
+
+        // Restart game clock
+        Time.timeScale = 1;
+    }
+
+    public void StopTime()
+    {
+        Time.timeScale = 0;
     }
 
     public int StoryEvents()
@@ -493,7 +580,7 @@ public class Territory : MonoBehaviour
             return 6;
         }
         // Drowned Earth - No Bowl
-        else if (storySeven && !earthAboveWater)
+        else if (storyThree && !earthAboveWater)
         {
             Debug.Log("7");
             return 7;

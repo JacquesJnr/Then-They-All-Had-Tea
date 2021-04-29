@@ -16,8 +16,6 @@ public class ClickToPlay : MonoBehaviour
 
     private void Start()
     {
-        lavaSpirit.LeanAlpha(0, 0);
-        forestSpirit.LeanAlpha(0, 0);
         earthSpirit.LeanAlpha(0, 0);
         skySpirit.LeanAlpha(0, 0);
         //storyBeats.alpha = 0;
@@ -39,8 +37,6 @@ public class ClickToPlay : MonoBehaviour
 
     public void FadeIn()
     {
-        lavaSpirit.LeanAlpha(1, 1.5f).setEase(LeanTweenType.easeOutSine);
-        forestSpirit.LeanAlpha(1, 1.5f).setEase(LeanTweenType.easeOutSine);
         earthSpirit.LeanAlpha(1, 1.5f).setEase(LeanTweenType.easeOutSine);
         skySpirit.LeanAlpha(1, 1.5f).setEase(LeanTweenType.easeOutSine);
 
